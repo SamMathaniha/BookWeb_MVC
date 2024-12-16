@@ -1,20 +1,58 @@
 ﻿@model List<Category>
 
-<h1>Category List</h1>
-<table class="table table-bordered table-striped">
-    <thead>
-    <tr>
-        <th>Categoty Name</th>
-        <th>Display Order</th>
-    </tr>
-    </thead>
-    <tbody>
-        @foreach(var obj in Model.OrderBy(u=>u.DisplayOrder))
-        {
-            <tr>
-               <td>@obj.Name</td>
-               <td>@obj.DisplayOrder</td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="container bg-light p-4 rounded shadow-sm">
+    <!-- Header Row -->
+    <div class="row mb-3 align-items-center">
+        <!-- Title Column -->
+        <div class="col-md-6 text-start">
+            <h2 class="text-primary">Category List</h2>
+        </div>
+        <!-- Action Button Column -->
+        <div class="col-md-9 text-end" style="margin-bottom:20px; margin-left:0px;">
+            <a class="btn btn-success" asp-controller="Category" asp-action="Create">
+                <i class="bi bi-plus-circle"></i> Add New Category
+            </a>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered table-striped shadow-sm">
+            <thead class="table-dark text-white">
+                <tr>
+                    <th class="text-center">Category Name</th>
+                    <th class="text-center">Display Order</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    @foreach (var obj in Model.OrderBy(u => u.DisplayOrder))
+                    {
+                        <tr>
+                            <td class="text-center align-middle">@obj.Name</td>
+                            <td class="text-center align-middle">@obj.DisplayOrder</td>
+                            <td class="text-center align-middle">
+                                <div class="d-flex justify-content-center gap-2">
+                                    <a class="btn btn-sm btn-primary" asp-controller="Category" asp-route-id="@obj.Id" asp-action="Edit">
+                                        <i class="bi bi-pencil-square"></i> Edit
+                                    </a>
+                                    <a class="btn btn-sm btn-danger" asp-controller="Category" asp-action="Delete">
+                                        <i class="bi bi-trash3-fill"></i> Delete
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td class="text-center align-middle" colspan="3">No categories found.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
