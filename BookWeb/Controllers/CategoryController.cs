@@ -17,10 +17,13 @@ namespace BookWeb.Controllers
             return View(objCategoryList);
         }
 
+        //Create
         public IActionResult Create()
         {
             return View();
         }
+
+      
 
         [HttpPost]
         public IActionResult Create(Category obj)
@@ -41,7 +44,7 @@ namespace BookWeb.Controllers
            
         }
 
-
+       //Edit
         public IActionResult Edit(int? Id)
         {
             if(Id==null || Id == 0)
@@ -49,8 +52,8 @@ namespace BookWeb.Controllers
                 return NotFound();
             }
             Category? CategoryFromDB = _db.Categories.Find(Id);                                //Method 1
-            Category? CategoryFromDB1 = _db.Categories.FirstOrDefault(u=>u.Id == Id);         //Method 2
-            Category? CategoryFromDB2 = _db.Categories.Where(u=>u.Id== Id).FirstOrDefault();  //Method 3
+           /* Category? CategoryFromDB1 = _db.Categories.FirstOrDefault(u=>u.Id == Id);         //Method 2
+            Category? CategoryFromDB2 = _db.Categories.Where(u=>u.Id== Id).FirstOrDefault();  *///Method 3
 
             if (CategoryFromDB == null) 
             {
@@ -58,21 +61,15 @@ namespace BookWeb.Controllers
             }
             return View(CategoryFromDB);
         }
-        
-       
+    
 
         [HttpPost]
         public IActionResult Edit(Category obj)
         {
-            if (obj.Name == obj.DisplayOrder)
-            {
-                ModelState.AddModelError("DisplayOrder", "The DisplayOrder can match the same Name");
-            }
-
-
+           
             if (ModelState.IsValid)
             {
-                _db.Categories.Add(obj);
+                _db.Categories.Update(obj);
                 _db.SaveChanges();
                 return RedirectToAction("Index");
             }
